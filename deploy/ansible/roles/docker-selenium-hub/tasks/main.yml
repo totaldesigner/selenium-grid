@@ -1,0 +1,29 @@
+---
+- name: Install python-pip package
+  apt: pkg=python-pip state=present
+
+- name: Install docker-py
+  pip: name=docker-py
+
+- name: Run selenium grid hub
+  docker_container:
+    name: selenium-hub
+    image: selenium/hub:3.0.1-aluminum
+    detach: yes
+    ports:
+      - "4444:4444"
+    state: started
+
+- name: Copy selenium-hub.service.j2
+  template:
+    src: selenium-hub.service.j2
+    dest: /etc/systemd/system/selenium-hub.service
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Enable service selenium-hub service and start if not running
+  systemd:
+    name: selenium-hub.service
+    enabled: yes
+    state: started

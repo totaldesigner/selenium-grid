@@ -1,0 +1,16 @@
+[Unit]
+Description=selenium-node-firefox
+After=selenium-hub.service
+Requires=selenium-hub.service
+
+[Service]
+TimeoutStartSec=0
+Restart=on-failure
+RestartSec=10
+ExecStartPre=-/usr/bin/docker kill selenium-node-firefox
+ExecStartPre=-/usr/bin/docker rm selenium-node-firefox
+ExecStart=/usr/bin/docker run --name selenium-node-firefox --link selenium-hub:hub -e NODE_MAX_INSTANCES=1000 -e NODE_MAX_SESSION=1000 selenium/node-firefox:3.0.1-aluminum
+ExecStop=-/usr/bin/docker stop selenium-node-firefox
+
+[Install]
+WantedBy=multi-user.target

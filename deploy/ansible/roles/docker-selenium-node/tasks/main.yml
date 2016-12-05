@@ -1,0 +1,70 @@
+- name: Run selenium node - chrome
+  docker_container:
+    name: selenium-node-chrome
+    image: selenium/node-chrome:3.0.1-aluminum
+    links:
+       - "selenium-hub:hub"
+    detach: yes
+    state: started
+  ignore_errors: yes
+
+- name: Run selenium node - firefox
+  docker_container:
+    name: selenium-node-firefox
+    image: selenium/node-firefox:3.0.1-aluminum
+    links:
+       - "selenium-hub:hub"
+    detach: yes
+    state: started
+  ignore_errors: yes
+
+#- name: Run selenium node - phantomjs
+#  docker_container:
+#    name: selenium-node-phantomjs
+#    image: totaldesigner/selenium-node-phantomjs
+#    links:
+#       - "selenium-hub:hub"
+#    detach: yes
+#    state: started
+
+- name: Copy selenium-node-chrome.service.j2
+  template:
+    src: selenium-node-chrome.service.j2
+    dest: /etc/systemd/system/selenium-node-chrome.service
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Copy selenium-node-firefox.service.j2
+  template:
+    src: selenium-node-firefox.service.j2
+    dest: /etc/systemd/system/selenium-node-firefox.service
+    owner: root
+    group: root
+    mode: 0755
+
+#- name: Copy selenium-node-phantomjs.service.j2
+#  template:
+#    src: selenium-node-phantomjs.service.j2
+#    dest: /etc/systemd/system/selenium-node-phantomjs.service
+#    owner: root
+#    group: root
+#    mode: 0755
+
+- name: Enable service selenium-node-chrome service and start if not running
+  systemd:
+    name: selenium-node-chrome.service
+    enabled: yes
+    state: started
+
+- name: Enable service selenium-node-firefox service and start if not running
+  systemd:
+    name: selenium-node-firefox.service
+    enabled: yes
+    state: started
+
+#- name: Enable service selenium-node-phantomjs service and start if not running
+#  systemd:
+#    name: selenium-node-phantomjs.service
+#    enabled: yes
+#    state: started

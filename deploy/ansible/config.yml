@@ -1,0 +1,7 @@
+web: {
+    ip: "{{ inventory_hostname }}"
+}
+
+ssh: {
+    user: "hats"
+}

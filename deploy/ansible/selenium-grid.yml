@@ -1,0 +1,12 @@
+- name:
+  hosts: selenium-grid
+  become: yes
+  vars_files:
+    - config.yml
+  roles:
+    - { role: docker, tags: ['docker'] }
+    - { role: docker-selenium-hub, tags: ['docker-selenium-hub'] }
+    - { role: docker-selenium-node, tags: ['docker-selenium-node'] }
+#    - { role: virtualbox, tags: ['virtualbox'] }
+#    - { role: vagrant, tags: ['vagrant'] }
+#    - { role: vagrant-selenium-node, tags: ['vagrant-selenium-node'] }

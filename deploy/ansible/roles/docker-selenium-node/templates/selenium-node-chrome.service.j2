@@ -1,0 +1,16 @@
+[Unit]
+Description=selenium-node-chrome
+After=selenium-hub.service
+Requires=selenium-hub.service
+
+[Service]
+TimeoutStartSec=0
+Restart=on-failure
+RestartSec=10
+ExecStartPre=-/usr/bin/docker kill selenium-node-chrome
+ExecStartPre=-/usr/bin/docker rm selenium-node-chrome
+ExecStart=/usr/bin/docker run --name selenium-node-chrome --link selenium-hub:hub -e NODE_MAX_INSTANCES=1000 -e NODE_MAX_SESSION=1000 selenium/node-chrome:3.0.1-aluminum
+ExecStop=-/usr/bin/docker stop selenium-node-chrome
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,13 @@
+FROM rgonalo/appium-emulator
+MAINTAINER totaldesigner <totaldesigner@gmail.com>
+
+#========================
+# Appium Configuration
+#========================
+#ENV NODE_MAX_INSTANCES 1
+#ENV NODE_MAX_SESSION 1
+#ENV NODE_REGISTER_CYCLE 5000
+COPY nodeconfig.json /opt/selenium/nodeconfig.json
+RUN chmod +x /opt/selenium/nodeconfig.json
+
+ENTRYPOINT ["appium", "--nodeconfig", "/opt/selenium/nodeconfig.json", "-p", "4723", "-bp", "4724"]

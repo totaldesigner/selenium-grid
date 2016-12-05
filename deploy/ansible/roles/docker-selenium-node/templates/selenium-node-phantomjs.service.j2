@@ -1,0 +1,16 @@
+[Unit]
+Description=selenium-node-phantomjs
+After=selenium-hub.service
+Requires=selenium-hub.service
+
+[Service]
+TimeoutStartSec=0
+Restart=on-failure
+RestartSec=10
+ExecStartPre=-/usr/bin/docker kill selenium-node-phantomjs
+ExecStartPre=-/usr/bin/docker rm selenium-node-phantomjs
+ExecStart=/usr/bin/docker run --name selenium-node-phantomjs --link selenium-hub:hub totaldesigner/selenium-node-phantomjs
+ExecStop=-/usr/bin/docker stop selenium-node-phantomjs
+
+[Install]
+WantedBy=multi-user.target

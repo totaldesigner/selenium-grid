@@ -1,0 +1,23 @@
+---
+- name: Clone ie-selenium
+  git: repo=https://github.com/bbhenry/ie-selenium
+       dest=/opt/ie-selenium
+       force=yes
+
+- name: Copy deuac.iso
+  synchronize: src=roles/vagrant-selenium-node/files/deuac.iso dest=/home/hats/Downloads/deuac.iso
+
+- name: Copy IEDriverServer.exe
+  synchronize: src=roles/vagrant-selenium-node/files/IEDriverServer.exe dest=/home/hats/Downloads/IEDriverServer.exe
+
+- name: Copy jre-8u112-windows-i586.exe
+  synchronize: src=roles/vagrant-selenium-node/files/jre-8u112-windows-i586.exe dest=/home/hats/Downloads/jre-8u112-windows-i586.exe
+
+- name: Copy selenium-server-standalone-3.0.1.jar
+  synchronize: src=roles/vagrant-selenium-node/files/selenium-server-standalone-3.0.1.jar dest=/home/hats/Downloads/selenium-server-standalone-3.0.1.jar
+
+#- name: Create VM
+#  become: yes
+#  become_user: root
+#  become_method: su
+#  command: vagrant up IE10_Win7 chdir=/opt/ie-selenium/

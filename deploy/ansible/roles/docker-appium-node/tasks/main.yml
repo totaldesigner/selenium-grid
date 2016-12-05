@@ -1,0 +1,48 @@
+---
+- name: Install python-pip package
+  apt: pkg=python-pip state=present
+
+#- name: Create target directory
+#  file: path=/opt/docker-appium-node state=directory mode=0755
+
+#- name: Copy Dockerfile.j2
+#  template:
+#    src=Dockerfile.j2
+#    dest=/opt/docker-appium-node/Dockerfile
+#    mode=644
+#    owner=root
+#    group=root
+#
+#- name: Copy nodeconfig.json.j2
+#  template:
+#    src=nodeconfig.json.j2
+#    dest=/opt/docker-appium-node/nodeconfig.json
+#    mode=644
+#    owner=root
+#    group=root
+
+#- name: Build image
+#  docker_image:
+#    name: mspark/appium-node
+#    path: /opt/docker-appium-node
+#    tag: 1.0.6
+#
+#- name: Run selenium grid hub
+#  docker_container:
+#    name: appium-node-android
+#    image: mspark/appium-node:1.0.6
+#    detach: yes
+#    exposed_ports:
+#      - 4723
+#    restart: yes
+#    state: started
+#
+- name: Run selenium grid hub
+  docker_container:
+    name: appium-node-android
+    image: rgonalo/appium-emulator
+    detach: yes
+    restart: yes
+    ports:
+      - "4723:4723"
+    state: started

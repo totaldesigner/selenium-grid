@@ -1,0 +1,46 @@
+---
+- name: Install python-apt
+  command: apt install python-apt
+
+- name: Update apt package cache
+  action: apt update_cache=yes
+
+- name: Add the new GPG key
+  command: apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+
+- name: Add the Docker repository to APT sources
+  command: echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" | sudo tee /etc/apt/sources.list.d/docker.list
+
+- name: Update apt package cache
+  action: apt update_cache=yes
+
+- name: Remove old packages
+  apt:
+    name: lxc-docker
+    purge: yes
+    state: absent
+
+- name: Get uname -r
+  shell: uname -r
+  ignore_errors: yes
+  register: uname_result
+
+- name: Install linux-image-extra packages
+  apt:
+    name: linux-image-extra-{{ uname_result.stdout }}
+    state: present
+
+- name: Install docker
+  apt:
+    name: docker.io
+    state: present
+    update_cache: yes
+
+- name: Add your user to docker group
+  command: usermod -aG docker {{ ssh.user }}
+
+- name: Start docker
+  command: systemctl start docker
+
+- name: Enable docker to run at system boot
+  command: systemctl enable docker
